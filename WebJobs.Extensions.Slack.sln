@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4E349765-7E83-43AA-8772-6553C9A9DB38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7E447F23-5B95-4587-AFA3-02DE9104E09C}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebJobs.Extensions.Slack", "src\WebJobs.Extensions.Slack\WebJobs.Extensions.Slack.csproj", "{E28A24A1-D687-4B10-AE97-E3313E497D3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "src\Sample\Sample.csproj", "{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E28A24A1-D687-4B10-AE97-E3313E497D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E28A24A1-D687-4B10-AE97-E3313E497D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E28A24A1-D687-4B10-AE97-E3313E497D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E28A24A1-D687-4B10-AE97-E3313E497D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E28A24A1-D687-4B10-AE97-E3313E497D3F} = {4E349765-7E83-43AA-8772-6553C9A9DB38}
+		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC} = {4E349765-7E83-43AA-8772-6553C9A9DB38}
+	EndGlobalSection
+EndGlobal
