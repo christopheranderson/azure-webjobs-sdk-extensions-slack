@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebJobs.Extensions.Slack", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "src\Sample\Sample.csproj", "{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebJobs.Extensions.Slack.Tests", "test\WebJobs.Extensions.Slack.Tests\WebJobs.Extensions.Slack.Tests.csproj", "{5D0A25A3-83AC-464E-B257-891C83B65D9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699EF879-F0E9-40E1-A3D2-1075FA50B4BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D0A25A3-83AC-464E-B257-891C83B65D9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D0A25A3-83AC-464E-B257-891C83B65D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D0A25A3-83AC-464E-B257-891C83B65D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D0A25A3-83AC-464E-B257-891C83B65D9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
