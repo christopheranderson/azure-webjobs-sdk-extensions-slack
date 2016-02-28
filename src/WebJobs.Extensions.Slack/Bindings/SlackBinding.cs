@@ -1,6 +1,8 @@
-﻿using System;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Azure.WebJobs.Host.Bindings;
@@ -11,11 +13,9 @@ using System.Reflection;
 using Microsoft.Azure.WebJobs;
 using System.Threading;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using RestSharp;
-using WebJobs.Extensions.Slack.Lib;
 
-namespace WebJobs.Extensions.Slack
+namespace Microsoft.Azure.WebJobs.Extensions.Slack
 {
     internal class SlackBinding : IBinding
     {
@@ -23,7 +23,7 @@ namespace WebJobs.Extensions.Slack
         private readonly SlackAttribute _attribute;
         private readonly SlackConfiguration _config;
         private readonly INameResolver _nameResolver;
-        private RestClient _client;
+        internal RestClient _client;
         private readonly BindingTemplate _webHookUrlBindingTemplate;
         private readonly BindingTemplate _textBindingTemplate;
         private readonly BindingTemplate _usernameBindingTemplate;
@@ -93,7 +93,7 @@ namespace WebJobs.Extensions.Slack
             };
         }
 
-        internal SlackMessage CreateDefaultMessage(IReadOnlyDictionary<string, object> bindingData)
+        public SlackMessage CreateDefaultMessage(IReadOnlyDictionary<string, object> bindingData)
         {
             SlackMessage message = new SlackMessage();
 
@@ -123,8 +123,18 @@ namespace WebJobs.Extensions.Slack
                 message.IconEmoji = _config.IconEmoji;
             }
 
+            // Set markdown
+            if (_iconEmojiBindingTemplate != null)
+            {
+                message.Mrkdwn = _attribute.IsMarkdown;
+            }
+            else if (!string.IsNullOrEmpty(_config.IconEmoji))
+            {
+                message.Mrkdwn = _config.IsMarkdown;
+            }
+
             // Set username
-            if(_usernameBindingTemplate != null)
+            if (_usernameBindingTemplate != null)
             {
                 message.Username = _usernameBindingTemplate.Bind(bindingData);
             }
@@ -188,7 +198,12 @@ namespace WebJobs.Extensions.Slack
                     return;
                 }
 
-                var results = ExecuteRequest(_client, _message);
+                var results = await ExecuteRequest(_client, _message, cancellationToken);
+
+                if(results.ResponseStatus != ResponseStatus.Completed)
+                {
+                    throw new FunctionInvocationException("Slack Message could not be delivered. See Exception details for more information.", results.ErrorException);
+                }
             }
 
             public string ToInvokeString()
@@ -196,7 +211,7 @@ namespace WebJobs.Extensions.Slack
                 return _message.Text;
             }
 
-            private IRestResponse ExecuteRequest(RestClient client, SlackMessage message)
+            private async Task<IRestResponse> ExecuteRequest(RestClient client, SlackMessage message, CancellationToken cancellationToken)
             {
                 RestRequest req = new RestRequest(Method.POST);
                 req.RequestFormat = DataFormat.Json;
@@ -205,7 +220,12 @@ namespace WebJobs.Extensions.Slack
                 config.NullValueHandling = NullValueHandling.Ignore;
                 config.ContractResolver = new SlackJsonNameContractResolver();
                 req.Parameters[0].Value = JsonConvert.SerializeObject(message, config);
-                return client.Execute(req);
+                return await Task.Run(
+                    () => {
+                        var results = client.Execute(req);
+                        return results;
+                    }, 
+                    cancellationToken);
             }
         }
     }

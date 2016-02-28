@@ -1,15 +1,14 @@
-﻿using Microsoft.Azure.WebJobs;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 using Microsoft.Azure.WebJobs.Host.Bindings;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
-
 using Slack.Webhooks;
 
-namespace WebJobs.Extensions.Slack
+namespace Microsoft.Azure.WebJobs.Extensions.Slack
 {
     internal class SlackAttributeBindingProvider : IBindingProvider
     {

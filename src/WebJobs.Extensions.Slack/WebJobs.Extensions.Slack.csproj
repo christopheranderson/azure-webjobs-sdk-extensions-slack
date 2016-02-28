@@ -7,8 +7,8 @@
     <ProjectGuid>{E28A24A1-D687-4B10-AE97-E3313E497D3F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebJobs.Extensions.Slack</RootNamespace>
-    <AssemblyName>WebJobs.Extensions.Slack</AssemblyName>
+    <RootNamespace>Microsoft.Azure.WebJobs.Extensions.Slack</RootNamespace>
+    <AssemblyName>Microsoft.Azure.WebJobs.Extensions.Slack</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,6 +21,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Microsoft.Azure.WebJobs.Extensions.Slack.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\src.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -103,6 +107,7 @@
     <Compile Include="Bindings\SlackBinding.cs" />
     <Compile Include="Config\SlackConfiguration.cs" />
     <Compile Include="Config\SlackJobHostConfigurationExtensions.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SlackAttribute.cs" />
   </ItemGroup>
@@ -110,6 +115,11 @@
     <None Include="app.config" />
     <Compile Include="Lib\SlackJsonNameContractResolver.cs" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\CustomDictionary.xml">
+      <Link>CustomDictionary.xml</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

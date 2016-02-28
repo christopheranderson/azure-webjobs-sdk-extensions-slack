@@ -1,15 +1,17 @@
-﻿using System;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
-namespace WebJobs.Extensions.Slack.Lib
+namespace Microsoft.Azure.WebJobs.Extensions.Slack
 {
-    class SlackJsonNameContractResolver : DefaultContractResolver
+    internal class SlackJsonNameContractResolver : DefaultContractResolver
     {
         private const string pattern = "^(.+)([A-Z])";
         private readonly Regex rgx = new Regex(pattern);
@@ -24,7 +26,7 @@ namespace WebJobs.Extensions.Slack.Lib
             IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
 
             properties = properties.Select(p => {
-                p.PropertyName = rgx.Replace(p.PropertyName, "$1_$2").ToLower();
+                p.PropertyName = rgx.Replace(p.PropertyName, "$1_$2").ToLower(CultureInfo.InvariantCulture);
                 return p;
             }).ToList();
 
