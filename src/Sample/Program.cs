@@ -24,7 +24,7 @@ namespace Sample
             }
             else
             {
-                webhookConfig = new WebHooksConfiguration(3000);
+                webhookConfig = new WebHooksConfiguration();
             }
 
             // These are optional and will be applied if no other value is specified.
