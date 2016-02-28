@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.WebHooks;
-using WebJobs.Extensions.Slack;
 using Slack.Webhooks;
 using Sample.models;
 
@@ -20,7 +16,24 @@ namespace Sample
             [Slack(Text = "{Text}", IconEmoji = "{IconEmoji}")] SlackMessage message, 
             TextWriter log)
         {
+            // No code is necessary to send the message. You can customize further here, though.
             log.WriteLine(m);
+            /*
+            message.Attachments.Add(...)
+            */
+        }
+
+        public void FullSlackBinding([WebHookTrigger] Message m,
+            [Slack(Channel = "{Channel}", 
+                   IconEmoji = "{IconEmoji}", 
+                   IsMarkdown = false, 
+                   Text ="{Text}", 
+                   Username = "{Username}", 
+                   WebHookUrl = "{WebHookUrl}")] SlackMessage message,
+            TextWriter log
+            )
+        {
+            // Further customize Slack Message here. i.e. add attachments, etc.
         }
     }
 }

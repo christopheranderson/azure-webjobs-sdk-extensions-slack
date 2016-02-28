@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 using Microsoft.Azure.WebJobs;
-using WebJobs.Extensions.Slack;
 using Microsoft.Azure.WebJobs.Extensions.WebHooks;
 
 namespace Sample
@@ -30,12 +27,14 @@ namespace Sample
                 webhookConfig = new WebHooksConfiguration(3000);
             }
 
-            // REMOVE THIS
+            // These are optional and will be applied if no other value is specified.
+            /*
             slackConfig.WebHookUrl = "";
             // IT IS A BAD THING TO HARDCODE YOUR WEBHOOKURL, USE THE APP SETTING "AzureWebJobsSlackWebHookKeyName"
             slackConfig.IconEmoji = "";
             slackConfig.Username = "";
             slackConfig.Channel = "";
+            */
 
             config.UseSlack(slackConfig);
             config.UseWebHooks(webhookConfig);
