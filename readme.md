@@ -2,7 +2,7 @@
 
 This extension adds an output binding for sending incoming webhooks to Slack.
 
-```
+```C#
 public void SimpleSlackBinding([WebHookTrigger] Message m,
     [Slack(Text = "{Text}", IconEmoji = "{IconEmoji}")] SlackMessage message, 
     TextWriter log)
@@ -17,7 +17,7 @@ The Slack binding returns a `SlackMessage` object which will then be sent to Sla
 
 You can bind properties from the input object in the usual WebJobs way. If you don't want to bind your Trigger to an object, you can set the `SlackMessage` properties in the function itself.
 
-```
+```C#
 public void FullSlackBinding([WebHookTrigger] Message m,
     [Slack(Channel = "{Channel}", 
             IconEmoji = "{IconEmoji}", 
@@ -33,7 +33,7 @@ public void FullSlackBinding([WebHookTrigger] Message m,
 ```
 
 You can enable the Extension via the `JobHostConfiguration` object.
-```
+```C#
 var config = new JobHostConfiguration();
 var slackConfig = new SlackConfiguration();
 
@@ -51,6 +51,10 @@ config.UseSlack(slackConfig);
 ## Notes
 
 This is currently still in development. Not for production use.
+
+## Tests
+
+Install the `xunit.runner.visualstudio` nuget to run the Tests via Text Explorer
 
 ## License
 
