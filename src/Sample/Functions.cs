@@ -5,6 +5,16 @@ using System.IO;
 using Microsoft.Azure.WebJobs;
 using Slack.Webhooks;
 using Sample.models;
+using System.Net.Http;
+using System.Net;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System;
+using System.Net.Http.Formatting;
+using Microsoft.AspNet.WebHooks;
+using System.Collections.Specialized;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Sample
 {
@@ -35,5 +45,96 @@ namespace Sample
         {
             // Further customize Slack Message here. i.e. add attachments, etc.
         }
+
+        // Workflow via Slack
+        public async Task SlackIniatedWebHook([WebHookTrigger("slack/webhook")] WebHookContext context,
+            [Queue("SlackWork")] ICollector<SlackWork> messages
+        )
+        {
+            // Try and parse the Slack Message Body with simple helper method
+            NameValueCollection nvc;
+            if(TryParseSlackBody(await context.Request.Content.ReadAsStringAsync(), out nvc))
+            {
+                Regex rgx = new Regex("(\\d+) (\\d+)");
+                Match match = rgx.Match(nvc["text"]);
+                int count;
+                int work;
+                if(int.TryParse(match.Groups[1].Value, out count) && int.TryParse(match.Groups[2].Value, out work))
+                {
+                    for (int i = 0; i < count; i++)
+                    {
+                        messages.Add(new SlackWork { id = i, work = work, replyUrl = nvc["response_url"], username = nvc["user_name"] });
+                    }
+
+                    // All good, quickly send an affirmative response
+                    context.Response = new HttpResponseMessage(HttpStatusCode.Accepted)
+                    {
+                        Content = new StringContent("Message received! Processing ...")
+                    };
+                }
+                else
+                {
+                    // Not good, quick send a negative response
+                    context.Response = new HttpResponseMessage(HttpStatusCode.Accepted)
+                    {
+                        Content = new StringContent("Incorrect format - please pass two numbers along - i.e. /cmd 2 30")
+                    };
+
+                    // We can stop here for the failure case
+                    return;
+                }
+            }
+            else
+            {
+                // Not good, quick send a negative response
+                context.Response = new HttpResponseMessage(HttpStatusCode.Accepted)
+                {
+                    Content = new StringContent("Something went wrong. :(")
+                };
+
+                // We can stop here for the failure case
+                return;
+            }
+
+            
+        }
+
+        public void ProcessSlackWork([QueueTrigger("SlackWork")] SlackWork work, 
+            [Slack(WebHookUrl = "{replyUrl}", Text = "Item: {id} finished processing {work} seconds of work.", IconEmoji = ":sleepy:", Channel = "@{username}")] SlackMessage slack,
+            TextWriter log
+        )
+        {
+            log.WriteLine($"Processing id: {work.id} - working for {work.work} seconds");
+
+
+            if(work.work > 10)
+            {
+                slack.IconEmoji = ":tada:";
+            }
+
+            int sleepFor = (work.work + (int)(.2 * work.work * (new Random()).NextDouble())) * 1000;
+            log.WriteLine($"Processing id: {work.id} - actually working for {sleepFor} seconds, because of some made up, factor of error");
+            Thread.Sleep(sleepFor);
+        }
+
+        private bool TryParseSlackBody(string body, out NameValueCollection nvc)
+        {
+            body = body.Replace('\n', '&');
+            body = body.Replace("\r", "");
+            nvc = System.Web.HttpUtility.ParseQueryString(body);
+
+            return nvc.Count > 0;
+        }
+
+        
     }
+
+    public class SlackWork
+    {
+        public int id { get; set; }
+        public string username { get; set; }
+        public int work { get; set; }
+        public string replyUrl { get; set; }
+    }
+
 }
