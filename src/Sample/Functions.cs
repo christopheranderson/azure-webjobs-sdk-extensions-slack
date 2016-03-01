@@ -15,6 +15,7 @@ using Microsoft.AspNet.WebHooks;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Sample
 {
@@ -44,6 +45,42 @@ namespace Sample
             )
         {
             // Further customize Slack Message here. i.e. add attachments, etc.
+            // More info on the SlackMessage object on the GitHub project: https://github.com/nerdfury/Slack.Webhooks
+
+            // Continue to set/manipulate properties on the Slack Message, programatically
+            message.Text += "WebJobs are Grrrreat!";
+            message.IconEmoji = ":troll:";
+
+            // For example, add attachments. See the Slack API docs for more info: https://api.slack.com/docs/attachments
+            message.Attachments.Add(new SlackAttachment
+            {
+                Fallback = "Required plain-text summary of the attachment.",
+                Color = "#36a64f",
+                Pretext = "Optional text that appears above the attachment block",
+                AuthorName = "Bobby Tables",
+                AuthorLink = "http://flickr.com/bobby/",
+                AuthorIcon = "http://flickr.com/icons/bobby.jpg",
+                Title = "Slack API Documentation",
+                TitleLink = "https://api.slack.com/",
+                Text = "Optional text that appears within the attachment",
+                Fields = new List<SlackField>
+                {
+                    new SlackField
+                    {
+                        Title = "Priority",
+                        Value = "High",
+                        Short = true
+                    },
+                    new SlackField
+                    {
+                        Title = "Assigned",
+                        Value = "Bobby",
+                        Short = true
+                    }
+                },
+                ImageUrl = "http://my-website.com/path/to/image.jpg",
+                ThumbUrl = "http://example.com/path/to/thumb.png"
+            });
         }
 
         // Workflow via Slack
